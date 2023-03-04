@@ -18,49 +18,49 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// OAMServiceClient is the client API for OAMService service.
+// OMAServiceClient is the client API for OMAService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type OAMServiceClient interface {
+type OMAServiceClient interface {
 	// Returns information about a single `Organization`.
 	//
 	// If the organization is not accessible by the authenticated principal or
 	// does not exist, an empty `Organization` message is returned within the
 	// `OrganizationGetResponse` message's `organization` field and the
 	// `status` field will contain a 404 code.
-	OrganizationGet(ctx context.Context, in *OrganizationGetRequest, opts ...grpc.CallOption) (*OrganizationGetResponse, error)
+	GetOrganization(ctx context.Context, in *GetOrganizationRequest, opts ...grpc.CallOption) (*GetOrganizationResponse, error)
 	// Returns information about `Organizations` in the authenticated
 	// principal's `any.cloud` `Account` that the principal has access to.
-	OrganizationList(ctx context.Context, in *OrganizationListRequest, opts ...grpc.CallOption) (OAMService_OrganizationListClient, error)
+	ListOrganizations(ctx context.Context, in *ListOrganizationsRequest, opts ...grpc.CallOption) (OMAService_ListOrganizationsClient, error)
 	// Creates a new `Organization`
-	OrganizationCreate(ctx context.Context, in *OrganizationCreateRequest, opts ...grpc.CallOption) (*OrganizationCreateResponse, error)
+	CreateOrganization(ctx context.Context, in *CreateOrganizationRequest, opts ...grpc.CallOption) (*CreateOrganizationResponse, error)
 	// Deletes an `Organization`
-	OrganizationDelete(ctx context.Context, in *OrganizationDeleteRequest, opts ...grpc.CallOption) (*OrganizationDeleteResponse, error)
+	DeleteOrganization(ctx context.Context, in *DeleteOrganizationRequest, opts ...grpc.CallOption) (*DeleteOrganizationResponse, error)
 }
 
-type oAMServiceClient struct {
+type oMAServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewOAMServiceClient(cc grpc.ClientConnInterface) OAMServiceClient {
-	return &oAMServiceClient{cc}
+func NewOMAServiceClient(cc grpc.ClientConnInterface) OMAServiceClient {
+	return &oMAServiceClient{cc}
 }
 
-func (c *oAMServiceClient) OrganizationGet(ctx context.Context, in *OrganizationGetRequest, opts ...grpc.CallOption) (*OrganizationGetResponse, error) {
-	out := new(OrganizationGetResponse)
-	err := c.cc.Invoke(ctx, "/oma.v1.OAMService/OrganizationGet", in, out, opts...)
+func (c *oMAServiceClient) GetOrganization(ctx context.Context, in *GetOrganizationRequest, opts ...grpc.CallOption) (*GetOrganizationResponse, error) {
+	out := new(GetOrganizationResponse)
+	err := c.cc.Invoke(ctx, "/oma.v1.OMAService/GetOrganization", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *oAMServiceClient) OrganizationList(ctx context.Context, in *OrganizationListRequest, opts ...grpc.CallOption) (OAMService_OrganizationListClient, error) {
-	stream, err := c.cc.NewStream(ctx, &OAMService_ServiceDesc.Streams[0], "/oma.v1.OAMService/OrganizationList", opts...)
+func (c *oMAServiceClient) ListOrganizations(ctx context.Context, in *ListOrganizationsRequest, opts ...grpc.CallOption) (OMAService_ListOrganizationsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &OMAService_ServiceDesc.Streams[0], "/oma.v1.OMAService/ListOrganizations", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &oAMServiceOrganizationListClient{stream}
+	x := &oMAServiceListOrganizationsClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -70,190 +70,190 @@ func (c *oAMServiceClient) OrganizationList(ctx context.Context, in *Organizatio
 	return x, nil
 }
 
-type OAMService_OrganizationListClient interface {
-	Recv() (*OrganizationListResponse, error)
+type OMAService_ListOrganizationsClient interface {
+	Recv() (*ListOrganizationsResponse, error)
 	grpc.ClientStream
 }
 
-type oAMServiceOrganizationListClient struct {
+type oMAServiceListOrganizationsClient struct {
 	grpc.ClientStream
 }
 
-func (x *oAMServiceOrganizationListClient) Recv() (*OrganizationListResponse, error) {
-	m := new(OrganizationListResponse)
+func (x *oMAServiceListOrganizationsClient) Recv() (*ListOrganizationsResponse, error) {
+	m := new(ListOrganizationsResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
 	return m, nil
 }
 
-func (c *oAMServiceClient) OrganizationCreate(ctx context.Context, in *OrganizationCreateRequest, opts ...grpc.CallOption) (*OrganizationCreateResponse, error) {
-	out := new(OrganizationCreateResponse)
-	err := c.cc.Invoke(ctx, "/oma.v1.OAMService/OrganizationCreate", in, out, opts...)
+func (c *oMAServiceClient) CreateOrganization(ctx context.Context, in *CreateOrganizationRequest, opts ...grpc.CallOption) (*CreateOrganizationResponse, error) {
+	out := new(CreateOrganizationResponse)
+	err := c.cc.Invoke(ctx, "/oma.v1.OMAService/CreateOrganization", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *oAMServiceClient) OrganizationDelete(ctx context.Context, in *OrganizationDeleteRequest, opts ...grpc.CallOption) (*OrganizationDeleteResponse, error) {
-	out := new(OrganizationDeleteResponse)
-	err := c.cc.Invoke(ctx, "/oma.v1.OAMService/OrganizationDelete", in, out, opts...)
+func (c *oMAServiceClient) DeleteOrganization(ctx context.Context, in *DeleteOrganizationRequest, opts ...grpc.CallOption) (*DeleteOrganizationResponse, error) {
+	out := new(DeleteOrganizationResponse)
+	err := c.cc.Invoke(ctx, "/oma.v1.OMAService/DeleteOrganization", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// OAMServiceServer is the server API for OAMService service.
-// All implementations must embed UnimplementedOAMServiceServer
+// OMAServiceServer is the server API for OMAService service.
+// All implementations must embed UnimplementedOMAServiceServer
 // for forward compatibility
-type OAMServiceServer interface {
+type OMAServiceServer interface {
 	// Returns information about a single `Organization`.
 	//
 	// If the organization is not accessible by the authenticated principal or
 	// does not exist, an empty `Organization` message is returned within the
 	// `OrganizationGetResponse` message's `organization` field and the
 	// `status` field will contain a 404 code.
-	OrganizationGet(context.Context, *OrganizationGetRequest) (*OrganizationGetResponse, error)
+	GetOrganization(context.Context, *GetOrganizationRequest) (*GetOrganizationResponse, error)
 	// Returns information about `Organizations` in the authenticated
 	// principal's `any.cloud` `Account` that the principal has access to.
-	OrganizationList(*OrganizationListRequest, OAMService_OrganizationListServer) error
+	ListOrganizations(*ListOrganizationsRequest, OMAService_ListOrganizationsServer) error
 	// Creates a new `Organization`
-	OrganizationCreate(context.Context, *OrganizationCreateRequest) (*OrganizationCreateResponse, error)
+	CreateOrganization(context.Context, *CreateOrganizationRequest) (*CreateOrganizationResponse, error)
 	// Deletes an `Organization`
-	OrganizationDelete(context.Context, *OrganizationDeleteRequest) (*OrganizationDeleteResponse, error)
-	mustEmbedUnimplementedOAMServiceServer()
+	DeleteOrganization(context.Context, *DeleteOrganizationRequest) (*DeleteOrganizationResponse, error)
+	mustEmbedUnimplementedOMAServiceServer()
 }
 
-// UnimplementedOAMServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedOAMServiceServer struct {
+// UnimplementedOMAServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedOMAServiceServer struct {
 }
 
-func (UnimplementedOAMServiceServer) OrganizationGet(context.Context, *OrganizationGetRequest) (*OrganizationGetResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method OrganizationGet not implemented")
+func (UnimplementedOMAServiceServer) GetOrganization(context.Context, *GetOrganizationRequest) (*GetOrganizationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrganization not implemented")
 }
-func (UnimplementedOAMServiceServer) OrganizationList(*OrganizationListRequest, OAMService_OrganizationListServer) error {
-	return status.Errorf(codes.Unimplemented, "method OrganizationList not implemented")
+func (UnimplementedOMAServiceServer) ListOrganizations(*ListOrganizationsRequest, OMAService_ListOrganizationsServer) error {
+	return status.Errorf(codes.Unimplemented, "method ListOrganizations not implemented")
 }
-func (UnimplementedOAMServiceServer) OrganizationCreate(context.Context, *OrganizationCreateRequest) (*OrganizationCreateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method OrganizationCreate not implemented")
+func (UnimplementedOMAServiceServer) CreateOrganization(context.Context, *CreateOrganizationRequest) (*CreateOrganizationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateOrganization not implemented")
 }
-func (UnimplementedOAMServiceServer) OrganizationDelete(context.Context, *OrganizationDeleteRequest) (*OrganizationDeleteResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method OrganizationDelete not implemented")
+func (UnimplementedOMAServiceServer) DeleteOrganization(context.Context, *DeleteOrganizationRequest) (*DeleteOrganizationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrganization not implemented")
 }
-func (UnimplementedOAMServiceServer) mustEmbedUnimplementedOAMServiceServer() {}
+func (UnimplementedOMAServiceServer) mustEmbedUnimplementedOMAServiceServer() {}
 
-// UnsafeOAMServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to OAMServiceServer will
+// UnsafeOMAServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to OMAServiceServer will
 // result in compilation errors.
-type UnsafeOAMServiceServer interface {
-	mustEmbedUnimplementedOAMServiceServer()
+type UnsafeOMAServiceServer interface {
+	mustEmbedUnimplementedOMAServiceServer()
 }
 
-func RegisterOAMServiceServer(s grpc.ServiceRegistrar, srv OAMServiceServer) {
-	s.RegisterService(&OAMService_ServiceDesc, srv)
+func RegisterOMAServiceServer(s grpc.ServiceRegistrar, srv OMAServiceServer) {
+	s.RegisterService(&OMAService_ServiceDesc, srv)
 }
 
-func _OAMService_OrganizationGet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OrganizationGetRequest)
+func _OMAService_GetOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetOrganizationRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OAMServiceServer).OrganizationGet(ctx, in)
+		return srv.(OMAServiceServer).GetOrganization(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/oma.v1.OAMService/OrganizationGet",
+		FullMethod: "/oma.v1.OMAService/GetOrganization",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OAMServiceServer).OrganizationGet(ctx, req.(*OrganizationGetRequest))
+		return srv.(OMAServiceServer).GetOrganization(ctx, req.(*GetOrganizationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OAMService_OrganizationList_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(OrganizationListRequest)
+func _OMAService_ListOrganizations_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(ListOrganizationsRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(OAMServiceServer).OrganizationList(m, &oAMServiceOrganizationListServer{stream})
+	return srv.(OMAServiceServer).ListOrganizations(m, &oMAServiceListOrganizationsServer{stream})
 }
 
-type OAMService_OrganizationListServer interface {
-	Send(*OrganizationListResponse) error
+type OMAService_ListOrganizationsServer interface {
+	Send(*ListOrganizationsResponse) error
 	grpc.ServerStream
 }
 
-type oAMServiceOrganizationListServer struct {
+type oMAServiceListOrganizationsServer struct {
 	grpc.ServerStream
 }
 
-func (x *oAMServiceOrganizationListServer) Send(m *OrganizationListResponse) error {
+func (x *oMAServiceListOrganizationsServer) Send(m *ListOrganizationsResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _OAMService_OrganizationCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OrganizationCreateRequest)
+func _OMAService_CreateOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateOrganizationRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OAMServiceServer).OrganizationCreate(ctx, in)
+		return srv.(OMAServiceServer).CreateOrganization(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/oma.v1.OAMService/OrganizationCreate",
+		FullMethod: "/oma.v1.OMAService/CreateOrganization",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OAMServiceServer).OrganizationCreate(ctx, req.(*OrganizationCreateRequest))
+		return srv.(OMAServiceServer).CreateOrganization(ctx, req.(*CreateOrganizationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OAMService_OrganizationDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OrganizationDeleteRequest)
+func _OMAService_DeleteOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteOrganizationRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OAMServiceServer).OrganizationDelete(ctx, in)
+		return srv.(OMAServiceServer).DeleteOrganization(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/oma.v1.OAMService/OrganizationDelete",
+		FullMethod: "/oma.v1.OMAService/DeleteOrganization",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OAMServiceServer).OrganizationDelete(ctx, req.(*OrganizationDeleteRequest))
+		return srv.(OMAServiceServer).DeleteOrganization(ctx, req.(*DeleteOrganizationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// OAMService_ServiceDesc is the grpc.ServiceDesc for OAMService service.
+// OMAService_ServiceDesc is the grpc.ServiceDesc for OMAService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var OAMService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "oma.v1.OAMService",
-	HandlerType: (*OAMServiceServer)(nil),
+var OMAService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "oma.v1.OMAService",
+	HandlerType: (*OMAServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "OrganizationGet",
-			Handler:    _OAMService_OrganizationGet_Handler,
+			MethodName: "GetOrganization",
+			Handler:    _OMAService_GetOrganization_Handler,
 		},
 		{
-			MethodName: "OrganizationCreate",
-			Handler:    _OAMService_OrganizationCreate_Handler,
+			MethodName: "CreateOrganization",
+			Handler:    _OMAService_CreateOrganization_Handler,
 		},
 		{
-			MethodName: "OrganizationDelete",
-			Handler:    _OAMService_OrganizationDelete_Handler,
+			MethodName: "DeleteOrganization",
+			Handler:    _OMAService_DeleteOrganization_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "OrganizationList",
-			Handler:       _OAMService_OrganizationList_Handler,
+			StreamName:    "ListOrganizations",
+			Handler:       _OMAService_ListOrganizations_Handler,
 			ServerStreams: true,
 		},
 	},
